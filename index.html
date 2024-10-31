@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CRCMS Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .sensor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .sensor-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2196F3;
+        }
+        .chart-container {
+            height: 400px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CRCMS Dashboard</h1>
+        
+        <div class="sensor-grid">
+            <div class="card">
+                <h3>Temperature</h3>
+                <div id="temperature" class="sensor-value">--°C</div>
+            </div>
+            <div class="card">
+                <h3>Humidity</h3>
+                <div id="humidity" class="sensor-value">--%</div>
+            </div>
+            <div class="card">
+                <h3>Soil Moisture</h3>
+                <div id="soil_moisture" class="sensor-value">--</div>
+            </div>
+            <div class="card">
+                <h3>pH Level</h3>
+                <div id="ph" class="sensor-value">--</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Temperature History</h3>
+            <div class="chart-container">
+                <canvas id="temperatureChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Humidity History</h3>
+            <div class="chart-container">
+                <canvas id="humidityChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCCYjj_mq7NE0AvVU_KGgcr4w3BstAjQwQ",
+            authDomain: "crcms-4d14f.firebaseapp.com",
+            databaseURL: "https://crcms-4d14f-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "crcms-4d14f",
+            storageBucket: "crcms-4d14f.firebasestorage.app",
+            messagingSenderId: "581257245242",
+            appId: "1:581257245242:web:3ae3d6879e1f4f994cfb03"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Initialize charts
+        const tempCtx = document.getElementById('temperatureChart').getContext('2d');
+        const humCtx = document.getElementById('humidityChart').getContext('2d');
+
+        const tempChart = new Chart(tempCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Temperature °C',
+                    data: [],
+                    borderColor: '#ff6384',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        const humChart = new Chart(humCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Humidity %',
+                    data: [],
+                    borderColor: '#36a2eb',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Listen to real-time updates
+        database.ref('sensor_data').limitToLast(50).on('value', (snapshot) => {
+            const data = [];
+            snapshot.forEach((childSnapshot) => {
+                data.push({
+                    timestamp: childSnapshot.val().timestamp,
+                    temperature: childSnapshot.val().temperature,
+                    humidity: childSnapshot.val().humidity,
+                    soil_moisture: childSnapshot.val().soil_moisture,
+                    pH: childSnapshot.val().pH
+                });
+            });
+
+            // Sort data by timestamp
+            data.sort((a, b) => a.timestamp - b.timestamp);
+
+            // Update latest values
+            if (data.length > 0) {
+                const latest = data[data.length - 1];
+                document.getElementById('temperature').textContent = `${latest.temperature.toFixed(1)}°C`;
+                document.getElementById('humidity').textContent = `${latest.humidity.toFixed(1)}%`;
+                document.getElementById('soil_moisture').textContent = latest.soil_moisture;
+                document.getElementById('ph').textContent = latest.pH.toFixed(2);
+            }
+
+            // Update charts
+            const labels = data.map(item => {
+                const date = new Date(item.timestamp * 1000);
+                return date.toLocaleTimeString();
+            });
+
+            tempChart.data.labels = labels;
+            tempChart.data.datasets[0].data = data.map(item => item.temperature);
+            tempChart.update();
+
+            humChart.data.labels = labels;
+            humChart.data.datasets[0].data = data.map(item => item.humidity);
+            humChart.update();
+        });
+    </script>
+</body>
+</html>
