@@ -46,10 +46,12 @@
         }
 
         .content {
-            max-width: 800px;
-            margin: 0 auto;
-            font-size: 1.2rem;
-        }
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    position: relative;
+}
 
         /* Point and Card Styles */
         .point {
@@ -63,6 +65,10 @@
             transition: all 0.5s ease;
             cursor: pointer;
         }
+        
+        .point ul{
+            list-style: none;
+        }
 
         .point:hover {
             transform: translateY(-5px);
@@ -72,18 +78,6 @@
         .point.visible {
             opacity: 1;
             transform: translateY(0);
-        }
-
-        .tech-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin: 1rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            cursor: pointer;
-            max-width: 300px;
-            text-align: center;
         }
 
         .tech-card:hover {
@@ -113,6 +107,7 @@
     opacity: 0;
     transform: translateX(-20px);
     animation: slideIn 0.5s forwards;
+    
 }
 
 .tech-card:hover li {
@@ -141,14 +136,18 @@
 /* Responsif untuk tablet dan mobile */
 @media (max-width: 768px) {
     .tech-grid {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        padding: 0.5rem;
+        gap: 10px;
     }
 
     .tech-card {
-        width: 90%;
-        margin-bottom: 1.5rem;
+        flex: 0 0 250px;
+        width: 250px;
+        padding: 1rem;
+    }
+
+    .content {
+        width: 95%;
     }
 }
         /* Profile Card Styles */
@@ -177,8 +176,9 @@
         }
         .tech-icon {
             width: 70px;
-            height: px;
+            height: auto;
             margin-bottom: 1rem;
+            max-height: 100px;
             transition: transform 0.3s ease;
 }
 .tech-icon:hover {
@@ -186,28 +186,34 @@
 }
 
 .tech-card {
+    flex: 0 0 300px; /* Tidak mengembang atau menyusut */
+    width: 300px;
+    min-height: 200px;
+    margin: 0.5rem;
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    padding: 1.5rem;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
 }
 
 .tech-card:hover {
     transform: translateY(-5px);
 }
 
-        /* Tech Grid Styles */
-        .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            padding: 1rem;
-        }
+.tech-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 1rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
 
         /* Quote Box Styles */
         .quote-box {
@@ -385,7 +391,7 @@
             }
 
             .tech-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 200px 200px 200px;
             }
 
             .profile-card {
@@ -579,42 +585,62 @@
     </div>
 
     <div id="slide8" class="slide">
-        <h1 class="title">Tips Praktis Implementasi</h1>
+        <h1 class="title">Tips Praktis Memulai</h1>
         <div class="content">
             <div class="tech-grid">
+                <!-- Langkah 1: Mulai dari Dasar -->
                 <div class="tech-card">
-                    <img src="./calendar.png" alt="Week 1-2" class="tech-icon">
-                    <h3>Minggu 1-2: Persiapan</h3>
+                    <img src="./start.gif" alt="Langkah Awal" class="tech-icon">
+                    <h3>Langkah Awal 🌱</h3>
                     <ul style="text-align: left; list-style-position: inside;">
-                        <li>Audit digital tools yang sudah digunakan</li>
-                        <li>Identifikasi area yang perlu improvement</li>
-                        <li>Mulai dengan satu tool produktivitas baru</li>
+                        <li>Mulai dari Microsoft Office (Word, Excel, PowerPoint)</li>
+                        <li>Buat email profesional (Gmail)</li>
+                        <li>Bergabung dengan Google Classroom</li>
+                        <li>Kenali fitur dasar smartphone untuk belajar</li>
                     </ul>
                 </div>
     
+                <!-- Langkah 2: Tingkatkan Produktivitas -->
                 <div class="tech-card">
-                    <img src="./learning.png" alt="Week 3-4" class="tech-icon">
-                    <h3>Minggu 3-4: Pengembangan</h3>
+                    <img src="./productivity.gif" alt="Produktivitas" class="tech-icon">
+                    <h3>Produktivitas 📱</h3>
                     <ul style="text-align: left; list-style-position: inside;">
-                        <li>Ikuti satu online course sesuai minat</li>
-                        <li>Buat atau update LinkedIn profile</li>
-                        <li>Mulai dokumentasikan pembelajaran di blog pribadi</li>
+                        <li>Gunakan Google Calendar untuk jadwal</li>
+                        <li>Simpan file di Google Drive</li>
+                        <li>Pakai Notes untuk mencatat</li>
+                        <li>Coba aplikasi To-Do List sederhana</li>
                     </ul>
                 </div>
     
+                <!-- Langkah 3: Kembangkan Diri -->
                 <div class="tech-card">
-                    <img src="./target.png" alt="Week 5-6" class="tech-icon">
-                    <h3>Minggu 5-6: Implementasi</h3>
+                    <img src="./growth.gif" alt="Pengembangan" class="tech-icon">
+                    <h3>Pengembangan 🚀</h3>
                     <ul style="text-align: left; list-style-position: inside;">
-                        <li>Bergabung dengan komunitas digital sesuai minat</li>
-                        <li>Mulai project kecil menggunakan skill baru</li>
-                        <li>Review dan evaluasi progress</li>
+                        <li>Ikuti tutorial di YouTube</li>
+                        <li>Join grup belajar di WhatsApp/Telegram</li>
+                        <li>Coba kursus gratis di Coursera/Udemy</li>
+                        <li>Tanya teman yang lebih paham</li>
                     </ul>
                 </div>
             </div>
             
+            <!-- Tips Box -->
+            <div style="margin-top: 2rem; width: px;">
+                <div class="point">
+                    <h3>💡 Tips Penting:</h3>
+                    <p style="text-align: center; margin-top: 1rem;">
+                        • Jangan takut mencoba hal baru<br>
+                        • Mulai dari yang paling sering digunakan<br>
+                        • Minta bantuan teman jika kesulitan<br>
+                        • Catat langkah-langkah yang sudah dipelajari
+                    </p>
+                </div>
+            </div>
+    
+            <!-- Motivational Quote -->
             <div class="quote-box" style="margin-top: 2rem;">
-                "Perjalanan seribu mil dimulai dari langkah pertama. Mulai dari yang kecil, tapi konsisten!"
+                "Setiap ahli teknologi dulunya juga pemula. Yang penting berani mulai dan konsisten belajar!"
             </div>
         </div>
     </div>
