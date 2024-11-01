@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Literasi Teknologi untuk Mahasiswa Modern</title>
+    <style>
+        /* Reset dan Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f0f2f5;
+        }
+
+        /* Slide Styles */
+        .slide {
+            height: 100vh;
+            display: none;
+            padding: 2rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: fadeInDown 0.5s ease;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.2rem;
+        }
+
+        /* Point and Card Styles */
+        .point {
+            background: white;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+
+        .point:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .point.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tech-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tech-card ul {
+    margin-top: 1rem;
+    padding: 0 1rem;
+}
+
+.tech-card li {
+    margin-bottom: 0.8rem;
+    color: #2c3e50;
+    text-align: left;
+}
+
+.tech-card h3 {
+    color: #3498db;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 0.5rem;
+}
+
+/* Animasi untuk list items */
+.tech-card li {
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slideIn 0.5s forwards;
+}
+
+.tech-card:hover li {
+    animation: pulse 1s infinite;
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Responsif untuk tablet dan mobile */
+@media (max-width: 768px) {
+    .tech-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tech-card {
+        width: 90%;
+        margin-bottom: 1.5rem;
+    }
+}
+        /* Profile Card Styles */
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 600px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #3498db;
+        }
+
+        .profile-info {
+            text-align: left;
+        }
+        .tech-icon {
+            width: 70px;
+            height: px;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+}
+.tech-icon:hover {
+    transform: scale(1.1);
+}
+
+.tech-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.tech-card:hover {
+    transform: translateY(-5px);
+}
+
+        /* Tech Grid Styles */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+
+        /* Quote Box Styles */
+        .quote-box {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem auto;
+            max-width: 800px;
+            text-align: center;
+            font-style: italic;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        /* Navigation Styles */
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        button {
+            padding: 0.8rem 1.5rem;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        #slide1 {
+    background-image: url('/Picture1.png'); /* Ganti dengan path gambar UAD yang Anda miliki */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    background-color: #002B8F; /* Warna biru UAD sebagai fallback */
+}
+
+        /* Overlay untuk memastikan teks tetap terbaca */
+        #slide1::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+
+            );
+            z-index: 1;
+        }
+
+        /* Memastikan konten tetap di atas background */
+        #slide1 .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Style untuk points agar lebih terbaca di atas background */
+        #slide1 .point {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        /* Style untuk title pada slide pertama */
+        #slide1 .title {
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Style untuk slide 2 dan seterusnya */
+            #slide2,
+            #slide3,
+            #slide4,
+            #slide5,
+            #slide6,
+            #slide7,
+            #slide8,
+            #slide9 {
+                background-image: url('./Picture2.jpg'); /* Ganti dengan path gambar UAD Anda */
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+
+            /* Pastikan konten tetap terbaca */
+            #slide2 .content,
+            #slide3 .content,
+            #slide4 .content,
+            #slide5 .content,
+            #slide6 .content,
+            #slide7 .content,
+            #slide8 .content,
+            #slide9 .content {
+                position: relative;
+                z-index: 2;
+            }
+
+            /* Jika perlu menambah contrast untuk keterbacaan */
+            #slide2 .point,
+            #slide3 .point,
+            #slide4 .point,
+            #slide5 .point,
+            #slide6 .point,
+            #slide7 .point,
+            #slide8 .point,
+            #slide9 .point {
+                background: rgba(255, 255, 255, 0.95);  /* Background lebih solid untuk keterbacaan */
+            }
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Progress Bar Styles */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: #f0f0f0;
+            z-index: 1000;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #3498db;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-info {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+        <!-- Slide 6: Profile -->
+        <div id="slide1" class="slide active">
+            <h1 class="title">Introdution My Self</h1>
+            <div class="profile-card">
+                <img src="./WhatsApp_Image_2024-07-25_at_22.23.14_977de45d-removebg.png" alt="Profile" class="profile-image">
+                <div class="profile-info">
+                    <h2>Rahadian Candra Vima Yoga</h2>
+                    <h5>Mahasiswa Sistem Informasi Universitas Ahmad Dahlan</h2>
+                    <p>Internet of Things (IoT)</p>
+                    <p>Menggabungkan passion SI dan IoT untuk solusi inovatif</p>
+                    <p>Project terkini: ABU Robocon, Line Follower Robot</p>
+                </div>
+            </div>
+            <div class="quote-box">
+                "Teknologi bukan hanya tentang alat, tapi tentang bagaimana kita menggunakannya untuk membuat perubahan positif"
+            </div>
+        </div>
+    <!-- Slide 1: Introduction -->
+    <div id="slide2" class="slide">
+        <h1 class="title">Literasi Teknologi untuk Mahasiswa Modern</h1>
+        <div class="content">
+            <div class="point tooltip">
+                🎯 Menjadi Mahasiswa yang Cerdas Digital
+            </div>
+            <div class="point">
+                🤖 Mengoptimalkan Teknologi untuk Pembelajaran
+            </div>
+            <div class="point">
+                💡 Memanfaatkan AI dengan Bijak
+            </div>
+            <div class="quote-box">
+                "Teknologi bukan hanya alat, tetapi jembatan menuju kesuksesan akademik dan profesional"
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: Definisi Teknologi -->
+    <div id="slide3" class="slide">
+        <h1 class="title">Definisi & Pentingnya Teknologi</h1>
+        <div class="content">
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <img src="./computer.png" alt="Tech Definition" class="tech-icon">
+                    <h3>Apa itu Teknologi?</h3>
+                    <p>Penerapan ilmu pengetahuan untuk memecahkan masalah praktis</p>
+                </div>
+                <div class="tech-card">
+                    <img src="./social-media-marketing.png" alt="Digital Era" class="tech-icon">
+                    <h3>Era Digital</h3>
+                    <p>Transformasi cara belajar dan berinteraksi</p>
+                </div>
+                <div class="tech-card">
+                    <img src="./creative-brain.png" alt="Innovation" class="tech-icon">
+                    <h3>Inovasi</h3>
+                    <p>Mendorong kreativitas dan solusi baru</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Pentingnya Literasi Teknologi -->
+    <div id="slide4" class="slide">
+        <h1 class="title">Mengapa Mahasiswa Harus Melek Teknologi?</h1>
+        <div class="content">
+            <div class="point">
+                <h3>1. Daya Saing Global 🌍</h3>
+                <p>Teknologi adalah kunci dalam persaingan kerja internasional</p>
+            </div>
+            <div class="point">
+                <h3>2. Efisiensi Pembelajaran 📚</h3>
+                <p>Akses mudah ke sumber belajar dan kolaborasi</p>
+            </div>
+            <div class="point">
+                <h3>3. Inovasi & Kreativitas 💡</h3>
+                <p>Mengembangkan solusi kreatif untuk masalah kompleks</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Teknologi Bermanfaat -->
+    <div id="slide5" class="slide">
+        <h1 class="title">Teknologi dalam Perkuliahan</h1>
+        <div class="content">
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <img src="./online-learning.png" alt="Online Learning" class="tech-icon">
+                    <h3>Platform Pembelajaran</h3>
+                    <ul>
+                        <li>Google Classroom</li>
+                        <li>Moodle</li>
+                        <li>Microsoft Teams</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <img src="./research.png" alt="Research Tools" class="tech-icon">
+                    <h3>Riset Digital</h3>
+                    <ul>
+                        <li>Google Scholar</li>
+                        <li>ResearchGate</li>
+                        <li>Mendeley</li>
+                    </ul>
+                </div>
+                <div class="tech-card">
+                    <img src="./team.png" alt="Collaboration" class="tech-icon">
+                    <h3>Kolaborasi Online</h3>
+                    <ul>
+                        <li>Google Drive</li>
+                        <li>Trello</li>
+                        <li>Slack</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- slide5 -->
+    <div id="slide6" class="slide">
+        <h1 class="title">Pengembangan Skill Digital</h1>
+        <div class="content">
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <img src="./blue-print.png" alt="Technical Skills" class="tech-icon">
+                    <h3>Technical Skills</h3>
+                    <p>
+                        • Programming (Coursera)<br>
+                        • Data Analysis (DataCamp)<br>
+                        • Digital Marketing (Google Digital Garage)
+                    </p>
+                </div>
+                <div class="tech-card">
+                    <img src="./decision.png" alt="Soft Skills" class="tech-icon">
+                    <h3>Soft Skills</h3>
+                    <p>
+                        • Leadership (LinkedIn Learning)<br>
+                        • Communication (Udemy)<br>
+                        • Time Management (Coursera)
+                    </p>
+                </div>
+                <div class="tech-card">
+                    <img src="./portfolio.png" alt="Portfolio" class="tech-icon">
+                    <h3>Portfolio Digital</h3>
+                    <p>
+                        • GitHub<br>
+                        • LinkedIn<br>
+                        • Personal Website
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Slide 5: Etika Digital -->
+    <div id="slide7" class="slide">
+        <h1 class="title">Etika & Tanggung Jawab Digital</h1>
+        <div class="content">
+            <div class="point">
+                <h3>🎯 Etika Digital</h3>
+                <ul>
+                    <li>Menghormati privasi orang lain</li>
+                    <li>Menghindari plagiarisme digital</li>
+                    <li>Berkomunikasi dengan sopan online</li>
+                </ul>
+            </div>
+            <div class="point">
+                <h3>⚖️ Tanggung Jawab</h3>
+                <ul>
+                    <li>Verifikasi informasi sebelum membagikan</li>
+                    <li>Melindungi data pribadi</li>
+                    <li>Menggunakan software legal</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="slide8" class="slide">
+        <h1 class="title">Tips Praktis Implementasi</h1>
+        <div class="content">
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <img src="./calendar.png" alt="Week 1-2" class="tech-icon">
+                    <h3>Minggu 1-2: Persiapan</h3>
+                    <ul style="text-align: left; list-style-position: inside;">
+                        <li>Audit digital tools yang sudah digunakan</li>
+                        <li>Identifikasi area yang perlu improvement</li>
+                        <li>Mulai dengan satu tool produktivitas baru</li>
+                    </ul>
+                </div>
+    
+                <div class="tech-card">
+                    <img src="./learning.png" alt="Week 3-4" class="tech-icon">
+                    <h3>Minggu 3-4: Pengembangan</h3>
+                    <ul style="text-align: left; list-style-position: inside;">
+                        <li>Ikuti satu online course sesuai minat</li>
+                        <li>Buat atau update LinkedIn profile</li>
+                        <li>Mulai dokumentasikan pembelajaran di blog pribadi</li>
+                    </ul>
+                </div>
+    
+                <div class="tech-card">
+                    <img src="./target.png" alt="Week 5-6" class="tech-icon">
+                    <h3>Minggu 5-6: Implementasi</h3>
+                    <ul style="text-align: left; list-style-position: inside;">
+                        <li>Bergabung dengan komunitas digital sesuai minat</li>
+                        <li>Mulai project kecil menggunakan skill baru</li>
+                        <li>Review dan evaluasi progress</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="quote-box" style="margin-top: 2rem;">
+                "Perjalanan seribu mil dimulai dari langkah pertama. Mulai dari yang kecil, tapi konsisten!"
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Conclusion -->
+    <div id="slide9" class="slide">
+        <h1 class="title">Kesimpulan & Quotes</h1>
+        <div class="content">
+            <div class="point">
+                <h3>Kesimpulan:</h3>
+                <ul>
+                    <li>Teknologi adalah alat, bukan tujuan</li>
+                    <li>Literasi digital adalah keterampilan kritis</li>
+                    <li>Gunakan teknologi dengan bijak dan bertanggung jawab</li>
+                    <li>Terus belajar dan beradaptasi</li>
+                </ul>
+            </div>
+            <div class="quote-box">
+                "Jadilah pengguna teknologi yang cerdas hari ini, untuk masa depan yang lebih baik esok"
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="navigation">
+        <button onclick="prevSlide()">Previous</button>
+        <button onclick="nextSlide()">Next</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 9;
+
+        function updateProgressBar() {
+            const progress = (currentSlide / totalSlides) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        function showSlide(slideNumber) {
+            document.querySelectorAll('.slide').forEach(slide => {
+                slide.classList.remove('active');
+            });
+            document.getElementById(`slide${slideNumber}`).classList.add('active');
+            
+            const points = document.querySelectorAll('.active .point');
+            points.forEach((point, index) => {
+                setTimeout(() => {
+                    point.classList.add('visible');
+                }, index * 200);
+            });
+
+            // Animate tech cards if present
+            if (document.querySelector('.active .tech-card')) {
+                const cards = document.querySelectorAll('.active .tech-card');
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add('slide-in');
+                    }, index * 200);
+                });
+            }
+
+            updateProgressBar();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Touch navigation
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const swipeDistance = touchEndX - touchStartX;
+
+            if (Math.abs(swipeDistance) > swipeThreshold) {
+                if (swipeDistance > 0) {
+                    prevSlide(); // Swipe right
+                } else {
+                    nextSlide(); // Swipe left
+                }
+            }
+        }
+
+        // Animation for tech cards
+        function animateTechCards() {
+            const cards = document.querySelectorAll('.active .tech-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('slide-in');
+                }, index * 200);
+            });
+        }
+
+        // Reset animations when changing slides
+        function resetAnimations() {
+            document.querySelectorAll('.point').forEach(point => {
+                point.classList.remove('visible');
+            });
+            document.querySelectorAll('.tech-card').forEach(card => {
+                card.classList.remove('slide-in');
+            });
+        }
+
+        // Initialize presentation
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize first slide animations
+            const points = document.querySelectorAll('.active .point');
+            points.forEach((point, index) => {
+                setTimeout(() => {
+                    point.classList.add('visible');
+                }, index * 200);
+            });
+
+            // Initialize progress bar
+            updateProgressBar();
+
+            // Add click listeners to tech cards
+            document.querySelectorAll('.tech-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(1.05)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-5px)';
+                    }, 200);
+                });
+            });
+
+            // Add hover effect to quote boxes
+            document.querySelectorAll('.quote-box').forEach(box => {
+                box.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.02)';
+                });
+                box.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+
+        // Function to handle fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // Add fullscreen button
+        const fullscreenButton = document.createElement('button');
+        fullscreenButton.innerHTML = '📺';
+        fullscreenButton.style.position = 'fixed';
+        fullscreenButton.style.top = '20px';
+        fullscreenButton.style.right = '20px';
+        fullscreenButton.style.zIndex = '1000';
+        fullscreenButton.onclick = toggleFullscreen;
+        document.body.appendChild(fullscreenButton);
+
+        // Add slide counter
+        const slideCounter = document.createElement('div');
+        slideCounter.style.position = 'fixed';
+        slideCounter.style.bottom = '20px';
+        slideCounter.style.right = '20px';
+        slideCounter.style.background = 'rgba(0,0,0,0.5)';
+        slideCounter.style.color = 'white';
+        slideCounter.style.padding = '5px 10px';
+        slideCounter.style.borderRadius = '5px';
+        document.body.appendChild(slideCounter);
+
+        function updateSlideCounter() {
+            slideCounter.textContent = `${currentSlide}/${totalSlides}`;
+        }
+
+        // Update original showSlide function to include counter update
+        const originalShowSlide = showSlide;
+        showSlide = function(slideNumber) {
+            originalShowSlide(slideNumber);
+            updateSlideCounter();
+        }
+
+        // Initialize slide counter
+        updateSlideCounter();
+
+        // Add auto-play functionality
+        let autoPlayInterval = null;
+
+        function toggleAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+                autoPlayButton.textContent = '▶️';
+            } else {
+                autoPlayInterval = setInterval(() => {
+                    if (currentSlide < totalSlides) {
+                        nextSlide();
+                    } else {
+                        clearInterval(autoPlayInterval);
+                        autoPlayInterval = null;
+                        autoPlayButton.textContent = '▶️';
+                    }
+                }, 5000); // Change slides every 5 seconds
+                autoPlayButton.textContent = '⏸️';
+            }
+        }
+
+        // Add auto-play button
+        const autoPlayButton = document.createElement('button');
+        autoPlayButton.innerHTML = '▶️';
+        autoPlayButton.style.position = 'fixed';
+        autoPlayButton.style.top = '20px';
+        autoPlayButton.style.right = '80px';
+        autoPlayButton.style.zIndex = '1000';
+        autoPlayButton.onclick = toggleAutoPlay;
+        document.body.appendChild(autoPlayButton);
+
+        // Add print functionality
+        function printPresentation() {
+            window.print();
+        }
+
+        // Add print button
+        const printButton = document.createElement('button');
+        printButton.innerHTML = '🖨️';
+        printButton.style.position = 'fixed';
+        printButton.style.top = '20px';
+        printButton.style.right = '140px';
+        printButton.style.zIndex = '1000';
+        printButton.onclick = printPresentation;
+        document.body.appendChild(printButton);
+
+        // Add custom print styles
+        const printStyles = document.createElement('style');
+        printStyles.textContent = `
+            @media print {
+                .slide {
+                    display: block !important;
+                    height: auto;
+                    page-break-after: always;
+                }
+                .navigation, 
+                #fullscreenButton,
+                #autoPlayButton,
+                #printButton,
+                #slideCounter {
+                    display: none !important;
+                }
+            }
+        `;
+        document.head.appendChild(printStyles);
+    </script>
+</body>
+</html>
